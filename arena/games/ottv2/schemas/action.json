@@ -1,0 +1,1 @@
+{"$schema":"https://json-schema.org/draft/2020-12/schema","title":"OTT v2 action 1.0.0","type":"object","additionalProperties":false,"required":["type","from","to"],"properties":{"type":{"const":"MOVE"},"from":{"type":"string","pattern":"^[a-i][1-9]$"},"to":{"type":"string","pattern":"^[a-i][1-9]$"}}}

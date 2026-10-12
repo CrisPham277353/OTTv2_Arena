@@ -1,0 +1,9 @@
+{
+ "$schema":"https://json-schema.org/draft/2020-12/schema","title":"OTT v2 observation 1.0.0",
+ "type":"object","additionalProperties":false,"required":["side","target","ply","pieces","lastMove","legalActions"],
+ "properties":{
+  "side":{"enum":["A","B"]},"target":{"enum":["a1","i9"]},"ply":{"type":"integer","minimum":0},
+  "pieces":{"type":"array","maxItems":18,"items":{"type":"object","additionalProperties":false,"required":["at","side","kind"],"properties":{"at":{"type":"string","pattern":"^[a-i][1-9]$"},"side":{"enum":["A","B"]},"kind":{"enum":["D","L","K"]}}}},
+  "lastMove":{"type":["object","null"]},"legalActions":{"type":"array","items":{"$ref":"action.json"}}
+ }
+}

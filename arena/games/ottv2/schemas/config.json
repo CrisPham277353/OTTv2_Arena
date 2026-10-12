@@ -1,0 +1,1 @@
+{"$schema":"https://json-schema.org/draft/2020-12/schema","title":"OTT v2 fixed configuration 1.0.0","type":"object","additionalProperties":false,"properties":{"gameInstanceId":{"type":"string","minLength":1}}}

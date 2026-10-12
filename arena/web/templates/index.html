@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101b29"><title>OTT v2 Arena</title>
+  <link rel="icon" href="/static/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/static/style.css?v=tournaments-1"><script type="module" src="/static/app.js?v=review-1"></script>
+</head>
+<body>
+<header class="topbar"><a class="brand" href="/"><span class="brand-mark">OTT</span><span>v2 Arena</span></a><span class="local-badge"><i></i> LOCAL ARENA</span></header>
+<main>
+  <section class="intro"><div><p class="eyebrow">ĐẤU TRƯỜNG BOT PYTHON</p><h1>Ba loại quân.<br>Một người chiến thắng.</h1><p class="intro-copy">Đấm, Lá, Kéo trên bàn cờ 9 × 9. Chọn chiến thuật, cho bot thi đấu và khám phá từng nước đi.</p></div><div class="rule-ring"><span>Đấm <b>D</b></span><span>→ Kéo <b>K</b></span><span>→ Lá <b>L</b></span><small>D ăn K · K ăn L · L ăn D</small></div></section>
+  <section class="panel submissions-panel">
+    <div class="section-row"><div><span class="eyebrow">ĐỘI THI / BÀI NỘP</span><h2>Tự viết bot và nộp mã Python</h2></div><span id="runtime-badge" class="badge">KIỂM TRA SANDBOX…</span></div>
+    <p class="muted small">Tải template, viết chiến thuật của đội, rồi nộp file .py. Hệ thống tự kiểm tra cú pháp và chạy thử JSONL trong sandbox. Bản đạt kiểm tra sẽ xuất hiện trong danh sách thi đấu.</p>
+    <div class="submission-links"><a href="/static/downloads/starter_bot.py" download>Tải starter_bot.py ↗</a><a href="/static/downloads/bot_sdk.py" download>Tải bot_sdk.py ↗</a><a href="/static/downloads/BOT_GUIDE.md" download>Hướng dẫn viết bot ↗</a></div>
+    <div id="team-access" class="team-access">
+      <form id="team-form"><label>Tên đội<input id="team-name" maxlength="60" required placeholder="Ví dụ: Đội Alpha"></label><button class="primary" type="submit">Tạo đội</button></form>
+      <form id="team-login"><label>Mã truy cập đội<input id="team-key" type="password" autocomplete="off" required placeholder="Dán mã để tiếp tục nộp bài"></label><button type="submit">Vào đội</button></form>
+    </div>
+    <div id="team-session" hidden><div class="section-row"><strong id="team-label"></strong><button id="team-logout" class="quiet">Đổi đội</button></div>
+      <p id="team-key-notice" class="muted small" hidden>Lưu mã này và chia sẻ riêng cho thành viên đội; mã cho phép nộp bài và đọc source của đội.</p><input id="new-team-key" type="text" readonly hidden aria-label="Mã đội vừa tạo">
+      <form id="submission-form"><label>Tên bot<input id="submission-name" maxlength="60" required placeholder="Ví dụ: Rush v1"></label><label>Bộ luật kiểm tra<select id="submission-version" aria-label="Bộ luật kiểm tra bài nộp"></select></label><label>File Python (.py, tối đa 256 KiB)<input id="submission-file" type="file" accept=".py,text/x-python" required></label><button id="submit-code" class="primary" type="submit">Nộp code ↗</button></form>
+      <p class="muted small">Mỗi lần nộp tạo một phiên bản riêng. Chỉ cần gửi file chiến thuật .py; bot_sdk.py được hệ thống cung cấp. Dùng Python stdlib, một process; stdout chỉ chứa action JSONL, stderr dành cho log.</p>
+      <div class="table-wrap"><table><thead><tr><th>Bot / Phiên bản</th><th>Trạng thái</th><th>Kết quả kiểm tra</th><th></th></tr></thead><tbody id="submissions"></tbody></table></div>
+    </div>
+    <p id="submission-message" class="muted small" role="status"></p><p id="submission-error" class="error" role="alert" hidden></p>
+  </section>
+  <section id="tournament-panel" class="panel tournament-panel">
+    <div class="section-row"><div><span class="eyebrow">GIẢI ĐẤU / VÒNG TRÒN</span><h2>Từ bài nộp đến bảng xếp hạng</h2></div><button id="tournament-refresh" class="quiet" type="button">Làm mới ↻</button></div>
+    <p class="muted small">Mỗi đội đăng ký một bot đã đạt kiểm tra. Chủ giải bắt đầu để khóa phiên bản, tạo lịch đấu tự động và chạy từng trận. Tối đa 16 đội.</p>
+    <details id="tournament-create"><summary>Tạo giải mới</summary>
+      <p id="tournament-auth-hint" class="muted small">Tạo hoặc vào đội ở phía trên để tổ chức giải và đăng ký bot.</p>
+      <form id="tournament-form"><label>Tên giải<input id="tournament-name" maxlength="80" required placeholder="Ví dụ: OTT Cup thử nghiệm"></label><label>Game / Bộ luật<select id="tournament-version" required></select></label><label>Thể thức<select id="tournament-format"><option selected>BO3</option><option>BO1</option></select></label><label>Seed<input id="tournament-seed" type="number" min="0" max="9007199254740991" step="1" value="42" required></label><button id="tournament-create-button" class="primary" type="submit" disabled>Tạo giải ↗</button></form>
+    </details>
+    <label class="tournament-picker">Giải đang theo dõi<select id="tournament-select" aria-label="Chọn giải đấu"></select></label>
+    <div id="tournament-detail" hidden>
+      <div class="section-row"><h3 id="tournament-title"></h3><span id="tournament-status" class="badge"></span></div>
+      <p id="tournament-info" class="muted small"></p>
+      <div class="tournament-actions"><a id="tournament-share" class="text-link">Liên kết đăng ký giải ↗</a><button id="tournament-start" class="primary" type="button" hidden>Khóa bot & bắt đầu giải ↗</button><button id="tournament-resume" type="button" hidden>Tiếp tục / chạy lại trận lỗi</button></div>
+      <p id="tournament-lock" class="tournament-lock" hidden></p>
+      <form id="tournament-entry-form" hidden><label>Phiên bản bot của đội<select id="tournament-bot" required aria-label="Bot đăng ký giải"></select></label><button id="tournament-register" type="submit">Đăng ký / đổi bot</button><button id="tournament-withdraw" type="button" hidden>Rút đội</button></form>
+      <p id="tournament-entry-hint" class="muted small"></p>
+      <div class="tournament-grid"><div><h3>Bảng xếp hạng</h3><div class="table-wrap"><table><thead><tr><th>Hạng</th><th>Đội / Bot đã chọn</th><th>Trận</th><th>T–B</th><th>Điểm</th><th>Game +/−</th><th>Đối đầu</th></tr></thead><tbody id="tournament-standings"></tbody></table></div><p class="muted small">Thắng trận: 3 điểm. Xếp theo điểm → hiệu số game → game thắng → điểm đối đầu trong nhóm bằng nhau. Bằng tất cả: đồng hạng. Chỉ tính trận hoàn tất.</p></div>
+      <div><h3>Lịch đấu tự động</h3><div class="table-wrap tournament-schedule"><table><thead><tr><th>Vòng</th><th>Cặp đội</th><th>Trạng thái / Điểm</th><th></th></tr></thead><tbody id="tournament-fixtures"></tbody></table></div><p class="muted small">Mỗi cặp gặp nhau một lần. Số đội lẻ có lượt nghỉ; mỗi đội tối đa một trận mỗi vòng. Bấm Xem bàn cờ để theo dõi trận đang đấu.</p></div></div>
+    </div>
+    <p id="tournament-message" class="muted small" role="status"></p><p id="tournament-error" class="error" role="alert" hidden></p>
+  </section>
+  <section class="panel setup"><div class="section-heading"><span class="eyebrow">01 / THIẾT LẬP</span><h2>Tạo trận đấu</h2></div>
+    <form id="match-form"><label>Bot #1 <span class="team-dot a"></span><select id="bot-a" required aria-label="Bot thứ nhất"></select></label><label>Bot #2 <span class="team-dot b"></span><select id="bot-b" required aria-label="Bot thứ hai"></select></label><label>Thể thức<select id="format"><option>BO1</option><option>BO3</option></select></label><label>Bộ luật<select id="game-version" aria-label="Bộ luật trận đấu"></select></label><label>Seed<input id="seed" type="number" min="0" max="9007199254740991" step="1" value="42" required></label><button class="primary" id="start" type="submit">Bắt đầu trận <span>↗</span></button></form>
+    <p id="strategy" class="muted small"></p><p class="safety">ⓘ Bot đội nộp chạy trong sandbox Linux; bot mẫu có sẵn để đấu thử. Runtime lỗi sẽ chặn bài nộp.</p>
+    <p id="error" class="error" role="alert" hidden></p>
+  </section>
+  <section class="arena-layout">
+    <div class="panel viewer"><div class="viewer-heading"><div><span class="eyebrow">02 / BÀN ĐẤU</span><h2 id="viewer-title">Sẵn sàng vào trận</h2></div><span id="status-badge" class="badge">CHỜ TRẬN</span></div>
+      <div class="scoreboard"><div><span class="team-dot a"></span><strong id="side-a">Bên A</strong><small id="role-a">Đi trước · đích i9</small></div><span class="score" id="score">0 : 0</span><div><span class="team-dot b"></span><strong id="side-b">Bên B</strong><small id="role-b">Đích a1</small></div></div>
+      <div id="board" class="board" aria-label="Bàn cờ OTT v2, a1 ở góc dưới trái"></div>
+      <p id="pressure-status" class="pressure-status" hidden></p><div class="board-legend"><span><i class="team-dot a"></i>A · Xanh</span><span><i class="team-dot b"></i>B · Cam</span><span>◎ Đích đối phương</span><span>D Đấm · L Lá · K Kéo</span></div>
+      <div class="replay-tools"><div class="replay-top"><label>Game <select id="game-select" disabled><option>—</option></select></label><span id="turn-label">Chọn hai bot để bắt đầu</span></div>
+        <input id="scrub" aria-label="Tua replay" type="range" min="0" max="0" value="0" disabled>
+        <div class="playback"><div class="button-group"><button id="prev" aria-label="Lượt trước" disabled>←</button><button id="play" disabled>▶ Phát</button><button id="next" aria-label="Lượt tiếp theo" disabled>→</button></div><span id="frame-label">0 / 0</span><label class="speed-label">Tốc độ <select id="speed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option></select></label></div>
+      </div>
+      <p class="muted small">Trong trận: bàn cờ cập nhật từ engine. Kết thúc: dùng các nút để xem lại từng lượt.</p>
+    </div>
+    <aside class="side-column"><section class="panel result-panel"><span class="eyebrow">KẾT QUẢ</span><h2 id="result-title">Chưa có trận đấu</h2><p id="result-text" class="muted">A đi trước. Thắng bằng đến đích, ăn hết quân hoặc một loại quân địch; xem bộ luật đang chọn bên dưới.</p><div id="game-results"></div><details><summary>Luật & phân xử</summary><p>Mỗi lượt đi một ô theo 8 hướng. Quân cùng loại chặn nhau. Không bỏ lượt.</p><div id="rule-summary"></div></details><a id="download" class="text-link" hidden>Tải replay JSON ↗</a></section>
+      <section class="panel move-panel"><div class="section-row"><h2>Nhật ký nước đi</h2><span id="move-count" class="muted small">0 lượt</span></div><p id="move-detail" class="last-move">Nước đi và quân bị ăn sẽ hiện ở đây.</p><div id="move-list" class="move-list"><p class="empty">Chờ trận đầu tiên</p></div></section></aside>
+  </section>
+  <section class="bottom-layout"><div class="panel"><div class="section-row"><div><span class="eyebrow">03 / LƯU TRỮ LOCAL</span><h2>Lịch sử trận đấu</h2></div><button id="refresh" class="quiet">Làm mới ↻</button></div><div class="table-wrap"><table><thead><tr><th>Thời gian</th><th>Cặp bot</th><th>Thể thức</th><th>Kết quả</th><th></th></tr></thead><tbody id="history"></tbody></table></div></div><div class="panel"><span class="eyebrow">THỐNG KÊ</span><h2>Thành tích bot</h2><div class="table-wrap"><table><thead><tr><th>Bot</th><th>Trận</th><th>Thắng</th><th>Thua</th></tr></thead><tbody id="stats"></tbody></table></div><p class="muted small">Theo trận BO1/BO3 đã hoàn tất. Lưu sau khi khởi động lại.</p></div></section>
+</main>
+<footer><span>OTT v2 Arena · Bộ luật có phiên bản</span><span>Python bots / JSONL / 500 ms mỗi quyết định</span></footer>
+</body></html>

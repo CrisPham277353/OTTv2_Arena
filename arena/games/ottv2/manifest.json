@@ -1,0 +1,21 @@
+{
+  "gameId": "ottv2",
+  "gameVersion": "1.0.0",
+  "name": "OTT v2 · Đấm – Lá – Kéo",
+  "pluginApi": "1.0",
+  "turnMode": "alternating",
+  "players": 2,
+  "resultMode": "winner_only",
+  "botProtocol": "bot-jsonl/1.0",
+  "implementation": "arena.games.ottv2.engine:OTTPlugin",
+  "configSchema": "schemas/config.json",
+  "observationSchema": "schemas/observation.json",
+  "actionSchema": "schemas/action.json",
+  "replayRenderer": "/static/renderers/ottv2.js",
+  "initialStateUrl": "/static/initial-state.json",
+  "ruleSummary": [
+    "A vào i9 hoặc B vào a1 thắng. Xóa một loại D/L/K của đối phương cũng thắng.",
+    "Lặp cùng bàn + lượt 3 lần hoặc đạt 300 lượt: phân xử, không hòa.",
+    "Phân xử: số quân sống, quân cách đích ≤2, khoảng cách nhỏ nhất, tổng khoảng cách; cuối cùng SHA256 seed/ID/lý do."
+  ]
+}

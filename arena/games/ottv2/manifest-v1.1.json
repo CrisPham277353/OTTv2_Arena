@@ -1,0 +1,22 @@
+{
+  "gameId": "ottv2",
+  "gameVersion": "1.1.0",
+  "name": "OTT v2 · Chống kéo dài trận",
+  "isDefault": true,
+  "pluginApi": "1.0",
+  "turnMode": "alternating",
+  "players": 2,
+  "resultMode": "winner_only",
+  "botProtocol": "bot-jsonl/1.0",
+  "implementation": "arena.games.ottv2.competitive:CompetitiveOTTPlugin",
+  "configSchema": "schemas/config.json",
+  "observationSchema": "schemas/observation-v1.1.json",
+  "actionSchema": "schemas/action.json",
+  "replayRenderer": "/static/renderers/ottv2.js?v=1.1.0",
+  "initialStateUrl": "/static/initial-state-v1.1.json",
+  "ruleSummary": [
+    "Thắng khi đến đích, ăn hết toàn bộ quân hoặc một loại quân địch.",
+    "15 lượt riêng không có tiến bộ: thua.",
+    "50 lượt không ăn quân, lặp 3 lần hoặc 300 lượt: phân xử không hòa."
+  ]
+}

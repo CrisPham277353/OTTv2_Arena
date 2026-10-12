@@ -1,0 +1,5 @@
+[
+  {"id":"random", "name":"Random", "script":"random_bot.py", "description":"Chọn ngẫu nhiên nước hợp lệ bằng seed.", "gameIds":["ottv2"]},
+  {"id":"capture_greedy", "name":"Capture Greedy", "script":"capture_greedy.py", "description":"Ưu tiên ăn quân, sau đó tiến gần đích.", "gameIds":["ottv2"]},
+  {"id":"goal_rush", "name":"Goal Rush", "script":"goal_rush.py", "description":"Tiến tới đích và tránh quân khắc chế.", "gameIds":["ottv2"]}
+]
